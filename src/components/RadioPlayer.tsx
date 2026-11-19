@@ -17,7 +17,7 @@ interface NowResponse {
 const SILENT_WAV =
   "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
 
-const STRING_WEIGHTS = ["h-[1px]", "h-[1px]", "h-[1.5px]", "h-[1.5px]", "h-[2px]", "h-[2px]"];
+const STRING_WIDTHS = ["w-[2px]", "w-[2px]", "w-[1.5px]", "w-[1.5px]", "w-[1px]", "w-[1px]"];
 
 function formatMs(ms: number): string {
   const totalSec = Math.max(0, Math.floor(ms / 1000));
@@ -250,6 +250,7 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
   return (
     <div className="relative min-h-screen text-[#26160a] flex flex-col">
       <MedievalBackdrop />
+
       <video
         ref={deckARef}
         preload="auto"
@@ -266,9 +267,9 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
       />
 
       {/* Tavernen-Kopfzeile */}
-      <header className="border-b border-[#3b2412] bg-[#1c120a]/95 text-[#e9d9b5]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
+      <header className="border-b border-[#3b2412]/80 bg-[#1c120a]/85 backdrop-blur-sm text-[#e9d9b5]">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-2.5">
             <span
               className={`h-2.5 w-2.5 rounded-full ${
                 tunedIn ? "bg-red-500 shadow-[0_0_10px_#ef4444] animate-pulse" : "bg-[#6b4c30]"
@@ -294,63 +295,115 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
         </div>
       </header>
 
-      {/* Hauptbühne: Die klassische Klampfe */}
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center gap-7 px-4 py-8 sm:px-6">
-        <section className="relative flex flex-col lg:flex-row items-stretch">
-          {/* Kopfplatte & Griffbrett (links auf Desktop, oben angedeutet) */}
-          <div className="hidden lg:flex items-center shrink-0">
-            {/* Kopfplatte mit 6 Wirbeln */}
-            <div className="relative flex flex-col justify-between h-32 w-14 rounded-l-xl border-2 border-[#2a1408] bg-[#3b1c0c] py-3 px-1.5 shadow-xl">
+      {/* Hauptbühne: Aufrechte klassische Klampfe (funktioniert auf Mobile & Desktop gleichermaßen) */}
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center gap-6 px-3 py-6 sm:px-6 sm:py-8">
+        <section className="relative flex w-full max-w-[440px] sm:max-w-[500px] flex-col items-center">
+          {/* 1. Kopfplatte (Headstock) mit 6 Stimmwirbeln */}
+          <div className="relative z-20 flex flex-col items-center">
+            <div className="relative flex h-24 w-20 flex-col justify-between rounded-t-xl border-2 border-[#261106] bg-gradient-to-b from-[#45200e] to-[#2c1408] py-2.5 px-2 shadow-xl">
+              {/* Fenster-Kopfplatte (klassische Gitarre) */}
+              <div className="pointer-events-none absolute inset-x-3.5 inset-y-3 flex justify-between opacity-35">
+                <span className="w-2 rounded-full bg-[#120703]" />
+                <span className="w-2 rounded-full bg-[#120703]" />
+              </div>
               {[0, 1, 2].map((row) => (
-                <div key={row} className="flex items-center justify-between">
-                  <span className="h-3 w-3 rounded-full border border-[#5c3618] bg-[#e9d9b5] shadow" />
-                  <span className="h-3 w-3 rounded-full border border-[#5c3618] bg-[#e9d9b5] shadow" />
+                <div key={row} className="relative flex items-center justify-between">
+                  {/* Linker & Rechter Wirbel */}
+                  <span className="-ml-4 h-3 w-3.5 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
+                  <span className="-mr-4 h-3 w-3.5 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
                 </div>
               ))}
             </div>
+            {/* Sattel (Nut) */}
+            <div className="h-1.5 w-[74px] border-x border-[#261106] bg-[#f3e5c8]" />
+          </div>
 
-            {/* Griffbrett mit Bünden und 6 Saiten */}
-            <div className="relative h-24 w-44 border-y-2 border-[#1f0f07] bg-[#2a160c] shadow-inner flex items-center">
-              {/* Bundstäbchen */}
-              <div className="absolute inset-0 flex justify-evenly pointer-events-none">
-                {[0, 1, 2, 3, 4].map((f) => (
-                  <span key={f} className="h-full w-[2px] bg-[#c9a96e]/65" />
-                ))}
-              </div>
-              {/* 6 Saiten */}
-              <div className="relative z-10 flex w-full flex-col justify-between h-16 px-0.5">
-                {STRING_WEIGHTS.map((w, idx) => (
-                  <span
-                    key={idx}
-                    className={`block w-full ${w} bg-gradient-to-r from-[#f3dfb8] to-[#b58b4c] shadow-[0_1px_1px_rgba(0,0,0,0.6)] ${
-                      tunedIn ? "string-vibrating" : ""
-                    }`}
-                  />
-                ))}
-              </div>
+          {/* 2. Griffbrett / Hals */}
+          <div className="relative z-20 flex h-24 sm:h-28 w-[74px] flex-col justify-evenly border-x-2 border-[#1f0d05] bg-[#2a150a] shadow-lg">
+            {[0, 1, 2, 3, 4].map((fret) => (
+              <span key={fret} className="block h-[2px] w-full bg-[#d4a359]/65" />
+            ))}
+            {/* 6 Saiten auf dem Griffbrett */}
+            <div className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 flex w-14 justify-between">
+              {STRING_WIDTHS.map((w, idx) => (
+                <span
+                  key={idx}
+                  className={`block h-full ${w} bg-gradient-to-b from-[#f3dfb8] to-[#c79d59] ${
+                    tunedIn ? "string-vibrating" : ""
+                  }`}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Korpus der klassischen Klampfe */}
-          <div className="klampfe-body relative flex-1 rounded-[2.4rem] px-6 py-7 sm:px-9 sm:py-8 overflow-hidden">
-            {/* Durchgehende 6 Saiten im Hintergrund über dem Schallloch */}
+          {/* 3. Klampfen-Korpus (echte Achter-Silhouette per SVG + Inhalte) */}
+          <div className="relative -mt-2 w-full">
+            {/* SVG Achter-Korpus */}
+            <svg
+              viewBox="0 0 460 560"
+              className="w-full h-auto drop-shadow-[0_28px_50px_rgba(0,0,0,0.8)]"
+              aria-hidden
+            >
+              <defs>
+                <radialGradient id="spruceSunburst" cx="50%" cy="42%" r="60%">
+                  <stop offset="0%" stopColor="#eab668" />
+                  <stop offset="52%" stopColor="#c47835" />
+                  <stop offset="88%" stopColor="#7c3a14" />
+                  <stop offset="100%" stopColor="#4c1f08" />
+                </radialGradient>
+              </defs>
+              {/* Äußerer Korpus */}
+              <path
+                d="M230,8
+                   C140,8 78,56 78,136
+                   C78,186 114,224 114,264
+                   C114,306 34,344 34,424
+                   C34,514 114,552 230,552
+                   C346,552 426,514 426,424
+                   C426,344 346,306 346,264
+                   C346,224 382,186 382,136
+                   C382,56 320,8 230,8 Z"
+                fill="url(#spruceSunburst)"
+                stroke="#2b1205"
+                strokeWidth="8"
+              />
+              {/* Cremefarbenes Purfling-Binding */}
+              <path
+                d="M230,16
+                   C146,16 88,61 88,136
+                   C88,183 123,221 123,264
+                   C123,310 44,347 44,424
+                   C44,507 120,543 230,543
+                   C340,543 416,507 416,424
+                   C416,347 337,310 337,264
+                   C337,221 372,183 372,136
+                   C372,61 314,16 230,16 Z"
+                fill="none"
+                stroke="#f3d7a4"
+                strokeWidth="2.5"
+                opacity="0.85"
+              />
+            </svg>
+
+            {/* 6 Saiten über Schallloch bis zum Steg */}
             <div
               aria-hidden
-              className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 hidden sm:flex flex-col justify-between h-16 opacity-65"
+              className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 flex w-14 justify-between z-10 opacity-75"
+              style={{ height: "58%" }}
             >
-              {STRING_WEIGHTS.map((w, idx) => (
+              {STRING_WIDTHS.map((w, idx) => (
                 <span
                   key={idx}
-                  className={`block w-full ${w} bg-gradient-to-r from-[#f3dfb8]/80 via-[#e8ca8e]/70 to-[#9a6f33]/40 ${
+                  className={`block h-full ${w} bg-gradient-to-b from-[#f3dfb8] via-[#e2bd7c] to-[#9a6f33] ${
                     tunedIn ? "string-vibrating" : ""
                   }`}
                 />
               ))}
             </div>
 
-            <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center">
-              {/* Schallloch mit Mosaik-Rosette & Cover / Glatzenmann-Wappen */}
-              <div className="klampfe-rosette relative h-48 w-48 shrink-0 rounded-full p-4 mx-auto sm:mx-0 flex items-center justify-center">
+            {/* Schallloch + Rosette (oberer/mittlerer Korpus) */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-[9%] sm:top-[10%] z-10">
+              <div className="klampfe-rosette relative h-36 w-36 sm:h-44 sm:w-44 rounded-full p-3.5 sm:p-4 flex items-center justify-center">
                 <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-[#2b1a0e] bg-[#140b05] shadow-inner flex items-center justify-center">
                   {currentItem?.kind === "song" && currentItem.track?.coverUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -360,119 +413,115 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                       className="h-full w-full object-cover sepia-[0.15] contrast-105"
                     />
                   ) : (
-                    <GlatzenmannCrest className="h-32 w-32" />
+                    <GlatzenmannCrest className="h-24 w-24 sm:h-28 sm:w-28" />
                   )}
                 </div>
               </div>
+            </div>
 
-              {/* Namensschild (Pergament) + Steg (Fortschritt) + Klampfe anstimmen */}
-              <div className="flex-1 min-w-0 space-y-4">
-                <div className="parchment-bg border-2 border-[#3b2412] px-4 py-3.5 shadow-[0_6px_16px_rgba(0,0,0,0.45)]">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    {currentItem?.kind === "jingle" ? (
-                      <span className="border border-[#5c3618] bg-[#d4b87c] px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs font-bold uppercase tracking-wider text-[#3b2412]">
-                        ✦ BREAK
-                      </span>
-                    ) : (
-                      <span className="border border-[#7a1c14] bg-[#7a1c14]/15 px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs font-bold uppercase tracking-wider text-[#7a1c14]">
-                        ● Auf der Klampfe
-                      </span>
-                    )}
-                  </div>
-
-                  <h1 className="mt-2 font-[family-name:var(--font-medieval-display)] text-3xl sm:text-4xl leading-tight text-[#1e1005] break-words">
-                    {currentItem ? itemTitle(currentItem) : "Sendepause"}
-                  </h1>
+            {/* Unterbug (Lower Bout): Pergament-Schild + Steg + Steuerung */}
+            <div className="absolute inset-x-[12%] bottom-[8%] sm:bottom-[9%] z-20 flex flex-col items-center gap-2.5 sm:gap-3">
+              {/* Pergament-Namensschild */}
+              <div className="parchment-bg w-full border-2 border-[#3b2412] px-3.5 py-2.5 sm:px-4 sm:py-3 text-center shadow-[0_6px_16px_rgba(0,0,0,0.5)]">
+                <div className="flex justify-center">
+                  {currentItem?.kind === "jingle" ? (
+                    <span className="border border-[#5c3618] bg-[#d4b87c] px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-[11px] font-bold uppercase tracking-wider text-[#3b2412]">
+                      ✦ BREAK
+                    </span>
+                  ) : (
+                    <span className="border border-[#7a1c14] bg-[#7a1c14]/15 px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-[11px] font-bold uppercase tracking-wider text-[#7a1c14]">
+                      ● Auf der Klampfe
+                    </span>
+                  )}
                 </div>
 
-                {/* Steg (Bridge) mit Saitenspannung / Fortschritt */}
-                <div className="rounded-lg border-2 border-[#d4a359]/60 bg-[#2b1409] px-4 py-3 shadow-inner">
-                  <div className="h-2.5 w-full overflow-hidden rounded-full border border-[#5c3618] bg-[#140904]">
-                    <div
-                      className={`h-full transition-[width] duration-150 ${
-                        currentItem?.kind === "jingle" ? "bg-[#d4a359]" : "bg-[#b91c1c]"
-                      }`}
-                      style={{ width: `${progressPct}%` }}
-                    />
-                  </div>
-                  <div className="mt-1.5 flex justify-between font-[family-name:var(--font-mono)] text-xs text-[#e9d9b5]">
-                    <span>{nowSnap ? formatMs(nowSnap.offsetMs) : "0:00"}</span>
-                    <span>{currentItem ? formatMs(currentItem.durationMs) : "0:00"}</span>
-                  </div>
-                </div>
+                <h1 className="mt-1.5 font-[family-name:var(--font-medieval-display)] text-2xl sm:text-3xl leading-tight text-[#1e1005] line-clamp-2 break-words">
+                  {currentItem ? itemTitle(currentItem) : "Sendepause"}
+                </h1>
+              </div>
 
-                {/* Plektrum-Button + Lautstärke */}
-                <div className="flex flex-wrap items-center gap-3">
+              {/* Steg (Bridge) mit Fortschrittsbalken */}
+              <div className="w-[92%] rounded-md border-2 border-[#d4a359]/65 bg-[#2b1409] px-3.5 py-2 shadow-lg">
+                <div className="h-2 w-full overflow-hidden rounded-full border border-[#5c3618] bg-[#140904]">
+                  <div
+                    className={`h-full transition-[width] duration-150 ${
+                      currentItem?.kind === "jingle" ? "bg-[#d4a359]" : "bg-[#b91c1c]"
+                    }`}
+                    style={{ width: `${progressPct}%` }}
+                  />
+                </div>
+                <div className="mt-1 flex justify-between font-[family-name:var(--font-mono)] text-[11px] text-[#e9d9b5]">
+                  <span>{nowSnap ? formatMs(nowSnap.offsetMs) : "0:00"}</span>
+                  <span>{currentItem ? formatMs(currentItem.durationMs) : "0:00"}</span>
+                </div>
+              </div>
+
+              {/* Steuerung: Klampfe anstimmen + Lautstärke */}
+              <div className="flex w-full flex-wrap items-center justify-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleTuneIn}
+                  className={`cursor-pointer border-2 border-[#261209] px-4 py-2 sm:px-5 font-[family-name:var(--font-medieval-display)] text-lg sm:text-xl tracking-wide shadow-[0_3px_0_#261209] transition active:translate-y-[2px] active:shadow-none ${
+                    tunedIn
+                      ? "bg-[#2b1409] text-[#f7e7c4] hover:bg-[#3d1e0f]"
+                      : "bg-[#7a1c14] text-[#f7e7c4] hover:bg-[#912219]"
+                  }`}
+                >
+                  {tunedIn ? "⏹ Klampfe absetzen" : "▶ Klampfe anstimmen!"}
+                </button>
+
+                <div className="flex items-center gap-2 rounded-md border border-[#3b2412] bg-[#f4e4c1]/95 px-2.5 py-1.5 shadow">
                   <button
                     type="button"
-                    onClick={handleTuneIn}
-                    className={`cursor-pointer border-2 border-[#261209] px-6 py-2.5 font-[family-name:var(--font-medieval-display)] text-xl tracking-wide shadow-[0_3px_0_#261209] transition active:translate-y-[2px] active:shadow-none ${
-                      tunedIn
-                        ? "bg-[#2b1409] text-[#f7e7c4] hover:bg-[#3d1e0f]"
-                        : "bg-[#7a1c14] text-[#f7e7c4] hover:bg-[#912219]"
-                    }`}
+                    onClick={() => setMuted((m) => !m)}
+                    aria-label={muted ? "Ton an" : "Stumm"}
+                    className="cursor-pointer font-[family-name:var(--font-mono)] text-[11px] font-bold text-[#2b190b]"
                   >
-                    {tunedIn ? "⏹ Klampfe absetzen" : "▶ Klampfe anstimmen!"}
+                    {muted || volume === 0 ? "STUMM" : `${Math.round(volume * 100)}%`}
                   </button>
-
-                  <div className="flex items-center gap-2 ml-auto rounded-lg border border-[#3b2412] bg-[#f4e4c1]/90 px-3 py-1.5 shadow">
-                    <button
-                      type="button"
-                      onClick={() => setMuted((m) => !m)}
-                      aria-label={muted ? "Ton an" : "Stumm"}
-                      className="cursor-pointer font-[family-name:var(--font-mono)] text-xs font-bold text-[#2b190b]"
-                    >
-                      {muted || volume === 0 ? "STUMM" : `${Math.round(volume * 100)}%`}
-                    </button>
-                    <input
-                      type="range"
-                      min={0}
-                      max={1}
-                      step={0.01}
-                      value={muted ? 0 : volume}
-                      onChange={(e) => {
-                        setMuted(false);
-                        setVolume(Number.parseFloat(e.target.value));
-                      }}
-                      aria-label="Lautstärke"
-                      className="w-24 sm:w-28 accent-[#7a1c14] cursor-pointer"
-                    />
-                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={muted ? 0 : volume}
+                    onChange={(e) => {
+                      setMuted(false);
+                      setVolume(Number.parseFloat(e.target.value));
+                    }}
+                    aria-label="Lautstärke"
+                    className="w-20 sm:w-24 accent-[#7a1c14] cursor-pointer"
+                  />
                 </div>
-
-                {audioError && (
-                  <p
-                    className="rounded border border-[#7a1c14] bg-[#f6ecd2] px-3 py-2 font-[family-name:var(--font-medieval-serif)] text-sm font-bold text-[#8b1510]"
-                    role="alert"
-                  >
-                    ⚔ {audioError}
-                  </p>
-                )}
               </div>
+
+              {audioError && (
+                <p
+                  className="w-full rounded border border-[#7a1c14] bg-[#f6ecd2] px-3 py-1.5 text-center font-[family-name:var(--font-medieval-serif)] text-xs sm:text-sm font-bold text-[#8b1510]"
+                  role="alert"
+                >
+                  ⚔ {audioError}
+                </p>
+              )}
             </div>
           </div>
         </section>
 
         {/* Setlist-Pergament unter der Klampfe */}
-        <section className="parchment-bg parchment-woodcut-border relative px-6 py-5 sm:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="font-[family-name:var(--font-medieval-display)] text-2xl text-[#1e1005]">
-              Demnächst auf dem Spielplan
-            </h2>
-            <span className="font-[family-name:var(--font-medieval-serif)] text-xs italic text-[#5c3618]">
-              „Aus Haargel wird bald Politur • Schnipp schnapp ab!“
-            </span>
-          </div>
+        <section className="parchment-bg parchment-woodcut-border relative w-full max-w-xl px-5 py-4 sm:px-7 sm:py-5">
+          <h2 className="font-[family-name:var(--font-medieval-display)] text-xl sm:text-2xl text-[#1e1005]">
+            Demnächst auf dem Spielplan
+          </h2>
 
-          <ul className="mt-3 divide-y divide-[#4a2b13]/25">
+          <ul className="mt-2.5 divide-y divide-[#4a2b13]/25">
             {(nowSnap?.upcoming ?? []).slice(0, 4).map((up) => (
               <li
                 key={itemKey(up)}
-                className="flex items-center justify-between py-2.5 font-[family-name:var(--font-medieval-serif)] text-base gap-3"
+                className="flex items-center justify-between py-2 font-[family-name:var(--font-medieval-serif)] text-sm sm:text-base gap-3"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span
-                    className={`shrink-0 border px-1.5 py-0.5 text-[11px] uppercase tracking-wider ${
+                    className={`shrink-0 border px-1.5 py-0.5 text-[10px] sm:text-[11px] uppercase tracking-wider ${
                       up.kind === "jingle"
                         ? "border-[#5c3618] bg-[#d4b87c] text-[#3b2412] font-bold"
                         : "border-[#4a2b13]/40 bg-[#dfd0ab] text-[#4a2b13]"
