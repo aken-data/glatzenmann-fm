@@ -65,6 +65,7 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
     A: null,
     B: null,
   });
+  const preloadedRef = useRef<{ A: string | null; B: string | null }>({ A: null, B: null });
 
   const volumeRef = useRef(volume);
   const mutedRef = useRef(muted);
@@ -159,6 +160,19 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
         const targetDeck = activeItem ? otherKey : activeKey;
         activeDeckRef.current = targetDeck;
         startItemOnDeck(targetDeck, np.item, serverNow);
+      }
+
+      // Nächsten Titel 10 s vor Start auf das freie Deck vorladen (verhindert Puffer-Pause)
+      const nextUp = np.upcoming[0];
+      if (nextUp && nextUp.startsAt - serverNow <= 10_000 && !deckItemsRef.current[otherKey]) {
+        const nextUrl = itemUrl(nextUp);
+        const otherEl = otherKey === "A" ? deckARef.current : deckBRef.current;
+        if (otherEl && preloadedRef.current[otherKey] !== nextUrl) {
+          preloadedRef.current[otherKey] = nextUrl;
+          otherEl.setAttribute("data-src", nextUrl);
+          otherEl.src = nextUrl;
+          otherEl.load();
+        }
       }
 
       for (const dk of ["A", "B"] as const) {

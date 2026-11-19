@@ -15,7 +15,8 @@ import { rngFor, randInt, shuffle } from "./prng.ts";
 import type { Era, Jingle, NowPlaying, ScheduleItem, StationState, Track } from "./types.ts";
 
 export const CROSSFADE_MS = 4000;
-export const FADE_TO_BLACK_MS = 2500;
+export const JINGLE_CROSSFADE_MS = 2800;
+export const JINGLE_OUT_OVERLAP_MS = 1500;
 export const MAX_SEPARATION = 5;
 
 // ---------------------------------------------------------------------------
@@ -148,13 +149,39 @@ export function buildCycle(
     let advance = durationMs;
 
     if (cur.kind === "song") {
-      if (prev?.kind === "song") fadeInMs = overlap(prev.track.durationMs, durationMs);
+      if (prev?.kind === "song") {
+        fadeInMs = overlap(prev.track.durationMs, durationMs);
+      } else if (prev?.kind === "jingle") {
+        fadeInMs = Math.min(
+          JINGLE_OUT_OVERLAP_MS,
+          Math.floor(prev.jingle.durationMs / 4),
+          Math.floor(durationMs / 4),
+        );
+      }
+
       if (next?.kind === "song") {
         fadeOutMs = overlap(durationMs, next.track.durationMs);
         advance = durationMs - fadeOutMs; // nächster Song startet im Crossfade
+      } else if (next?.kind === "jingle") {
+        // Song -> Jingle: knackiger Radio-Crossfade, schneidet Suno-Endstille weg
+        fadeOutMs = Math.min(
+          JINGLE_CROSSFADE_MS,
+          Math.floor(durationMs / 4),
+          Math.floor(next.jingle.durationMs / 2),
+        );
+        advance = durationMs - fadeOutMs;
       } else {
-        fadeOutMs = Math.min(FADE_TO_BLACK_MS, Math.floor(durationMs / 4)); // Fade-to-Black
+        fadeOutMs = Math.min(JINGLE_CROSSFADE_MS, Math.floor(durationMs / 4));
       }
+    } else {
+      // Jingle -> nächster Song: kurze Ramp-Überlappung ohne Sendeloch
+      fadeInMs = 150;
+      const outOverlap =
+        next?.kind === "song"
+          ? Math.min(JINGLE_OUT_OVERLAP_MS, Math.floor(durationMs / 4), Math.floor(next.track.durationMs / 4))
+          : 0;
+      fadeOutMs = outOverlap > 0 ? Math.min(500, outOverlap) : 250;
+      advance = durationMs - outOverlap;
     }
 
     items.push({
