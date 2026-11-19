@@ -108,11 +108,8 @@ export async function refreshStationPlaylist(
 
     const needsImmediateReplace =
       state.eras.length > 0 &&
-      state.eras.every(
-        (e) =>
-          e.songs.every((s) => s.id.startsWith("demo-")) ||
-          e.songs.some((s) => s.audioUrl.endsWith(".m4a")),
-      );
+      (state.eras.every((e) => e.songs.every((s) => s.id.startsWith("demo-"))) ||
+        state.eras.some((e) => e.songs.some((s) => s.audioUrl.endsWith(".m4a"))));
 
     const noteStr = notes.length > 0 ? ` + ${notes.join(", ")}` : "";
     const nextStateBase: StationState = {
