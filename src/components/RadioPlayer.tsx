@@ -295,31 +295,31 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
         </div>
       </header>
 
-      {/* Hauptbühne: Aufrechte klassische Klampfe (funktioniert auf Mobile & Desktop gleichermaßen) */}
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center gap-6 px-3 py-6 sm:px-6 sm:py-8">
-        <section className="relative flex w-full max-w-[440px] sm:max-w-[500px] flex-col items-center">
+      {/* Hauptbühne: Auf Desktop nebeneinander (ohne Scrollen), auf Mobile untereinander */}
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10 px-3 py-4 sm:px-6 sm:py-6">
+        <section className="relative flex w-full max-w-[380px] sm:max-w-[410px] shrink-0 flex-col items-center">
           {/* 1. Kopfplatte (Headstock) mit 6 Stimmwirbeln */}
           <div className="relative z-20 flex flex-col items-center">
-            <div className="relative flex h-24 w-20 flex-col justify-between rounded-t-xl border-2 border-[#261106] bg-gradient-to-b from-[#45200e] to-[#2c1408] py-2.5 px-2 shadow-xl">
+            <div className="relative flex h-20 w-18 flex-col justify-between rounded-t-xl border-2 border-[#261106] bg-gradient-to-b from-[#45200e] to-[#2c1408] py-2 px-2 shadow-xl">
               {/* Fenster-Kopfplatte (klassische Gitarre) */}
-              <div className="pointer-events-none absolute inset-x-3.5 inset-y-3 flex justify-between opacity-35">
-                <span className="w-2 rounded-full bg-[#120703]" />
-                <span className="w-2 rounded-full bg-[#120703]" />
+              <div className="pointer-events-none absolute inset-x-3 inset-y-2.5 flex justify-between opacity-35">
+                <span className="w-1.5 rounded-full bg-[#120703]" />
+                <span className="w-1.5 rounded-full bg-[#120703]" />
               </div>
               {[0, 1, 2].map((row) => (
                 <div key={row} className="relative flex items-center justify-between">
                   {/* Linker & Rechter Wirbel */}
-                  <span className="-ml-4 h-3 w-3.5 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
-                  <span className="-mr-4 h-3 w-3.5 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
+                  <span className="-ml-3.5 h-2.5 w-3 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
+                  <span className="-mr-3.5 h-2.5 w-3 rounded-full border border-[#5c3618] bg-[#f4e4c1] shadow" />
                 </div>
               ))}
             </div>
             {/* Sattel (Nut) */}
-            <div className="h-1.5 w-[74px] border-x border-[#261106] bg-[#f3e5c8]" />
+            <div className="h-1.5 w-[66px] border-x border-[#261106] bg-[#f3e5c8]" />
           </div>
 
           {/* 2. Griffbrett / Hals */}
-          <div className="relative z-20 flex h-24 sm:h-28 w-[74px] flex-col justify-evenly border-x-2 border-[#1f0d05] bg-[#2a150a] shadow-lg">
+          <div className="relative z-20 flex h-20 w-[66px] flex-col justify-evenly border-x-2 border-[#1f0d05] bg-[#2a150a] shadow-lg">
             {[0, 1, 2, 3, 4].map((fret) => (
               <span key={fret} className="block h-[2px] w-full bg-[#d4a359]/65" />
             ))}
@@ -507,8 +507,8 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
           </div>
         </section>
 
-        {/* Setlist-Pergament unter der Klampfe */}
-        <section className="parchment-bg parchment-woodcut-border relative w-full max-w-xl px-5 py-4 sm:px-7 sm:py-5">
+        {/* Setlist-Pergament: auf Desktop rechts neben der Klampfe, auf Mobile darunter */}
+        <section className="parchment-bg parchment-woodcut-border relative w-full max-w-[410px] lg:max-w-md flex-1 px-5 py-4 sm:px-7 sm:py-6">
           <h2 className="font-[family-name:var(--font-medieval-display)] text-xl sm:text-2xl text-[#1e1005]">
             Demnächst auf dem Spielplan
           </h2>
