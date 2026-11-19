@@ -93,7 +93,8 @@ export async function loadStationState(): Promise<StationState> {
       const { blobs } = await list({ prefix: BLOB_PATH, limit: 5 });
       const exact = blobs.find((b) => b.pathname === BLOB_PATH);
       if (exact) {
-        const res = await fetch(exact.url, { cache: "no-store" });
+        const sep = exact.url.includes("?") ? "&" : "?";
+        const res = await fetch(`${exact.url}${sep}t=${Date.now()}`, { cache: "no-store" });
         if (res.ok) {
           const parsed = (await res.json()) as StationState;
           if (parsed && parsed.version === 1) return parsed;
@@ -126,6 +127,7 @@ export async function saveStationState(state: StationState): Promise<void> {
       contentType: "application/json",
       addRandomSuffix: false,
       allowOverwrite: true,
+      cacheControlMaxAge: 0,
     });
     return;
   }
