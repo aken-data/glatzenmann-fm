@@ -31,3 +31,51 @@
     inset 0 -4px 8px rgba(0, 0, 0, 0.5),
     0 6px 14px rgba(0, 0, 0, 0.45);
 }
+
+/* Klassische Klampfe: Fichten-/Zederndecke mit Sunburst & Holzmaserung */
+.klampfe-body {
+  background-color: #b76e32;
+  background-image:
+    radial-gradient(circle at 50% 45%, rgba(235, 179, 102, 0.92) 0%, rgba(193, 120, 52, 0.95) 52%, rgba(105, 51, 18, 0.98) 100%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(62, 28, 8, 0.04) 0px,
+      rgba(62, 28, 8, 0.04) 2px,
+      transparent 2px,
+      transparent 7px
+    );
+  box-shadow:
+    inset 0 0 0 3px #f3d7a4,
+    inset 0 0 0 7px #3d1d0a,
+    inset 0 18px 40px rgba(0, 0, 0, 0.35),
+    0 28px 60px rgba(0, 0, 0, 0.75);
+}
+
+/* Schallloch-Rosette (klassisches Mosaik) */
+.klampfe-rosette {
+  background:
+    radial-gradient(circle, #140b05 56%, transparent 57%),
+    repeating-conic-gradient(
+      from 0deg,
+      #d4a359 0deg 6deg,
+      #5c2810 6deg 12deg,
+      #f2dfb6 12deg 18deg,
+      #7a1c14 18deg 24deg
+    );
+  box-shadow:
+    inset 0 10px 26px rgba(0, 0, 0, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes string-hum {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(0.7px);
+  }
+}
+
+.string-vibrating {
+  animation: string-hum 0.11s infinite ease-in-out;
+}

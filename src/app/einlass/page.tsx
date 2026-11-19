@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { GlatzenmannCrest } from "@/components/GlatzenmannCrest";
 
 export default function EinlassPage() {
   const router = useRouter();
@@ -71,15 +72,13 @@ export default function EinlassPage() {
 
         {/* Holzschnitt-Wappen */}
         <div className="my-6 flex justify-center">
-          <div className="flex items-center gap-4 border-y-2 border-[#3b2412] px-6 py-2.5">
+          <div className="flex items-center gap-4 border-y-2 border-[#3b2412] px-6 py-3">
             <span className="font-[family-name:var(--font-medieval-serif)] text-sm italic text-[#4a2b13]">
-              Ohne Unterlass
+              Heldenkranz &amp; Politur
             </span>
-            <span className="wax-seal flex h-12 w-12 items-center justify-center rounded-full font-[family-name:var(--font-medieval-display)] text-lg text-[#f7e7c4] rotate-[-6deg]">
-              G·FM
-            </span>
+            <GlatzenmannCrest className="h-16 w-16 shrink-0 drop-shadow-md" />
             <span className="font-[family-name:var(--font-medieval-serif)] text-sm italic text-[#4a2b13]">
-              Synchron im Äther
+              Indikator für Feinkultur
             </span>
           </div>
         </div>
@@ -87,15 +86,14 @@ export default function EinlassPage() {
         {/* Plakat-Text */}
         <div className="space-y-4 font-[family-name:var(--font-medieval-serif)] text-base sm:text-lg leading-relaxed text-[#2b190b]">
           <p className="first-letter:float-left first-letter:mr-2.5 first-letter:font-[family-name:var(--font-medieval-display)] first-letter:text-5xl first-letter:leading-none first-letter:text-[#7a1c14]">
-            Kommet herbei, ihr Spielleut, Zechbrüder und edlen Damen! Der hochwohlgeborene
-            <strong> Glatzenmann </strong>
-            hat seine güldene Laute gestimmt und schleudert siebzig unerhörte Weisen aus eigener
-            Schmiede in das ganze Königreich.
+            Kommet herbei, ihr Spielleut, Barden und Freunde der schicken Kahlrasur! Wo einst
+            Geheimratsecken waren, erstrahlt nun der güldene <strong>Heldenkranz</strong>: Aus
+            Haargel ward Politur, die Bürste dient allein dem Bart – <em>schnipp schnapp ab!</em>
           </p>
           <p>
-            Kein schnöder Zufall trennt die Zuhörerschaft: <strong>Alle lauschen demselben Lied
-            zur selben Stund&apos;</strong> – gerade so, als säßen wir vereint am großen Feuer,
-            begleitet von feierlichen Heroldsrufen nach je zwei oder drei Gesängen.
+            Gardisten stehen am Zaun Spalier, während <strong>Glatzenmann.fm</strong> auf der
+            klassischen Klampfe alle Hörer im selben Takt vereint – samt Balsam gegen Sonnenbrand
+            und kurzen <strong>BREAK</strong>-Rufen zwischen den Gesängen.
           </p>
         </div>
 
