@@ -106,9 +106,13 @@ export async function refreshStationPlaylist(
     const finalJingles =
       combinedJingles.length > 0 ? combinedJingles : DEFAULT_PLACEHOLDER_JINGLES;
 
-    const isCurrentlyDemoOnly =
+    const needsImmediateReplace =
       state.eras.length > 0 &&
-      state.eras.every((e) => e.songs.every((s) => s.id.startsWith("demo-")));
+      state.eras.every(
+        (e) =>
+          e.songs.every((s) => s.id.startsWith("demo-")) ||
+          e.songs.some((s) => s.audioUrl.endsWith(".m4a")),
+      );
 
     const noteStr = notes.length > 0 ? ` + ${notes.join(", ")}` : "";
     const nextStateBase: StationState = {
@@ -116,7 +120,7 @@ export async function refreshStationPlaylist(
       playlistUrl: targetUrl,
       jinglePlaylistUrl: targetJingleUrl,
       driveFolderUrl: targetDriveFolderUrl,
-      eras: isCurrentlyDemoOnly ? [] : state.eras,
+      eras: needsImmediateReplace ? [] : state.eras,
       lastRefresh: {
         at: now,
         ok: true,
