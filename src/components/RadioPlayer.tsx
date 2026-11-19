@@ -297,13 +297,13 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
 
       {/* Hauptbühne: Auf Desktop nebeneinander (ohne Scrollen), auf Mobile untereinander */}
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 py-5 sm:px-6">
-        {/* Linke Spalte: Reine Klampfe (unverdeckt!) + kompakte Steuerung darunter */}
-        <section className="flex w-full max-w-[300px] sm:max-w-[330px] shrink-0 flex-col items-center gap-4">
+        {/* Linke Spalte: Anatomisch echte mittelalterliche Klampfe + Steuerung */}
+        <section className="flex w-full max-w-[310px] sm:max-w-[330px] shrink-0 flex-col items-center gap-4">
           <div className="relative flex w-full flex-col items-center">
-            {/* 1. Kopfplatte (Headstock) mit 6 Stimmwirbeln */}
+            {/* 1. Klassische Fenster-Kopfplatte mit 6 Stimmwirbeln */}
             <div className="relative z-20 flex flex-col items-center">
-              <div className="relative flex h-[68px] w-[62px] flex-col justify-between rounded-t-xl border-2 border-[#261106] bg-gradient-to-b from-[#45200e] to-[#2c1408] py-2 px-2 shadow-xl">
-                <div className="pointer-events-none absolute inset-x-3 inset-y-2.5 flex justify-between opacity-35">
+              <div className="relative flex h-[64px] w-[52px] flex-col justify-between rounded-t-xl border-2 border-[#261106] bg-gradient-to-b from-[#45200e] to-[#2c1408] py-2 px-1.5 shadow-xl">
+                <div className="pointer-events-none absolute inset-x-2.5 inset-y-2.5 flex justify-between opacity-45">
                   <span className="w-1.5 rounded-full bg-[#120703]" />
                   <span className="w-1.5 rounded-full bg-[#120703]" />
                 </div>
@@ -315,15 +315,19 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                 ))}
               </div>
               {/* Sattel (Nut) */}
-              <div className="h-1.5 w-[54px] border-x border-[#261106] bg-[#f3e5c8]" />
+              <div className="h-1.5 w-[42px] border-x border-[#261106] bg-[#f3e5c8]" />
             </div>
 
-            {/* 2. Griffbrett / Hals */}
-            <div className="relative z-20 flex h-[88px] w-[54px] flex-col justify-evenly border-x-2 border-[#1f0d05] bg-[#2a150a] shadow-lg">
-              {[0, 1, 2, 3, 4].map((fret) => (
-                <span key={fret} className="block h-[2px] w-full bg-[#d4a359]/65" />
+            {/* 2. Schlankes Palisander-Griffbrett (Hals) */}
+            <div className="relative z-20 flex h-[104px] w-[42px] flex-col justify-evenly border-x-2 border-[#1f0d05] bg-[#241108] shadow-lg">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((fret) => (
+                <span key={fret} className="block h-[1.5px] w-full bg-[#d4a359]/65" />
               ))}
-              <div className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 flex w-10 justify-between">
+              {/* Bund-Markierungen (Inlays) */}
+              <span className="pointer-events-none absolute top-[38%] left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-[#f3dfb8]/55" />
+              <span className="pointer-events-none absolute top-[64%] left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-[#f3dfb8]/55" />
+              {/* 6 Saiten auf dem Griffbrett */}
+              <div className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 flex w-8 justify-between">
                 {STRING_WIDTHS.map((w, idx) => (
                   <span
                     key={idx}
@@ -335,21 +339,36 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
               </div>
             </div>
 
-            {/* 3. Klampfen-Korpus: komplett frei & sichtbar */}
-            <div className="relative -mt-2 w-full">
+            {/* 3. Klampfen-Korpus mit fotorealistischer Fichtenholz-Maserung */}
+            <div className="relative -mt-1 w-full">
               <svg
                 viewBox="0 0 420 500"
-                className="w-full h-auto drop-shadow-[0_26px_46px_rgba(0,0,0,0.82)]"
+                className="w-full h-auto drop-shadow-[0_26px_46px_rgba(0,0,0,0.85)]"
                 aria-hidden
               >
                 <defs>
-                  <radialGradient id="spruceSunburst" cx="50%" cy="44%" r="60%">
-                    <stop offset="0%" stopColor="#eab668" />
-                    <stop offset="52%" stopColor="#c47835" />
-                    <stop offset="88%" stopColor="#7c3a14" />
-                    <stop offset="100%" stopColor="#4c1f08" />
+                  <pattern
+                    id="klampfeWoodPattern"
+                    patternUnits="userSpaceOnUse"
+                    width="420"
+                    height="500"
+                  >
+                    <image
+                      href="/images/klampfe-wood.jpg"
+                      x="0"
+                      y="0"
+                      width="420"
+                      height="500"
+                      preserveAspectRatio="xMidYMid slice"
+                    />
+                  </pattern>
+                  <radialGradient id="bodyVignette" cx="50%" cy="46%" r="58%">
+                    <stop offset="35%" stopColor="#000000" stopOpacity="0" />
+                    <stop offset="85%" stopColor="#3b1605" stopOpacity="0.45" />
+                    <stop offset="100%" stopColor="#1e0a02" stopOpacity="0.78" />
                   </radialGradient>
                 </defs>
+                {/* Holz-Korpus */}
                 <path
                   d="M210,8
                      C126,8 70,54 70,126
@@ -360,10 +379,24 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                      C392,314 312,274 312,238
                      C312,204 350,174 350,126
                      C350,54 294,8 210,8 Z"
-                  fill="url(#spruceSunburst)"
+                  fill="url(#klampfeWoodPattern)"
                   stroke="#2b1205"
                   strokeWidth="8"
                 />
+                {/* Sunburst-/Rand-Tiefe */}
+                <path
+                  d="M210,8
+                     C126,8 70,54 70,126
+                     C70,174 108,204 108,238
+                     C108,274 28,314 28,386
+                     C28,464 104,494 210,494
+                     C316,494 392,464 392,386
+                     C392,314 312,274 312,238
+                     C312,204 350,174 350,126
+                     C350,54 294,8 210,8 Z"
+                  fill="url(#bodyVignette)"
+                />
+                {/* Cremefarbenes Purfling-Binding */}
                 <path
                   d="M210,16
                      C132,16 79,59 79,126
@@ -377,13 +410,24 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                   fill="none"
                   stroke="#f3d7a4"
                   strokeWidth="2.5"
-                  opacity="0.85"
+                  opacity="0.82"
                 />
               </svg>
 
-              {/* Schallloch + Rosette im Zentrum */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[20%] z-10">
-                <div className="klampfe-rosette relative h-36 w-36 sm:h-40 sm:w-40 rounded-full p-3 flex items-center justify-center">
+              {/* Griffbrett-Zunge bis zum Schallloch */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[42px] border-x-2 border-[#1f0d05] bg-[#241108] flex flex-col justify-evenly z-10"
+                style={{ height: "31%" }}
+              >
+                {[0, 1, 2, 3, 4].map((f) => (
+                  <span key={f} className="block h-[1.5px] w-full bg-[#d4a359]/65" />
+                ))}
+              </div>
+
+              {/* Schallloch + Rosette: anatomisch tiefer (top-[31%]) und kompakt im Korpus */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-[30%] z-10">
+                <div className="klampfe-rosette relative h-28 w-28 sm:h-32 sm:w-32 rounded-full p-2.5 flex items-center justify-center">
                   <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-[#2b1a0e] bg-[#140b05] shadow-inner flex items-center justify-center">
                     {currentItem?.kind === "song" && currentItem.track?.coverUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -393,17 +437,17 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                         className="h-full w-full object-cover sepia-[0.15] contrast-105"
                       />
                     ) : (
-                      <GlatzenmannCrest className="h-24 w-24" />
+                      <GlatzenmannCrest className="h-20 w-20" />
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* 6 Saiten über dem Schallloch bis genau zum Steg */}
+              {/* 6 Saiten über Griffbrett-Zunge & Schallloch bis genau zum Steg */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 flex w-10 justify-between z-20 opacity-80"
-                style={{ height: "73%" }}
+                className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 flex w-8 justify-between z-20 opacity-85"
+                style={{ height: "75%" }}
               >
                 {STRING_WIDTHS.map((w, idx) => (
                   <span
@@ -415,8 +459,10 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                 ))}
               </div>
 
-              {/* Schlanker Holz-Steg (Bridge) im Unterbug mit Fortschrittsbalken */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[72%] z-20 w-[56%] rounded border-2 border-[#d4a359]/70 bg-[#2b1409] px-2.5 py-2 shadow-lg">
+              {/* Holz-Steg (Bridge) im Unterbug mit Elfenbein-Stegeinlage & Fortschritt */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-[73%] z-20 w-[48%] rounded border-2 border-[#1c0b03] bg-[#2a1207] px-2.5 py-2 shadow-[0_6px_12px_rgba(0,0,0,0.6)]">
+                {/* Weiße Stegeinlage (Saddle) */}
+                <div className="mb-1.5 h-1 w-full rounded-full bg-[#f3e5c8]/85" />
                 <div className="h-1.5 w-full overflow-hidden rounded-full border border-[#5c3618] bg-[#140904]">
                   <div
                     className={`h-full transition-[width] duration-150 ${
@@ -482,22 +528,22 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
           )}
         </section>
 
-        {/* Rechte Spalte: Mittelalterliche Boten-Papierrolle (Aktueller Titel + Spielplan) */}
+        {/* Rechte Spalte: Fotorealistische Boten-Papierrolle mit Patina & Wachssiegel */}
         <section className="relative w-full max-w-[420px] flex-1">
-          {/* Oberer Holzstab mit gedrechselten Knäufen */}
-          <div className="relative flex items-center">
-            <span className="h-6 w-3.5 rounded-l-full border-2 border-[#1c0b03] bg-[#d4a359] shadow" />
+          {/* Oberer Holzstab mit gedrechselten Knäufen & Papier-Wickel */}
+          <div className="relative z-10 flex items-center">
+            <span className="h-6 w-4 rounded-l-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
             <div className="scroll-rod h-4 flex-1 rounded-sm" />
-            <span className="h-6 w-3.5 rounded-r-full border-2 border-[#1c0b03] bg-[#d4a359] shadow" />
+            <span className="h-6 w-4 rounded-r-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
           </div>
 
           {/* Ausgerolltes Pergament */}
-          <div className="scroll-paper mx-3 px-5 py-5 sm:px-7 sm:py-6">
+          <div className="scroll-paper relative mx-3.5 px-5 py-5 sm:px-7 sm:py-6">
             {/* Aktueller Titel */}
-            <div className="flex items-start justify-between gap-3 border-b-2 border-[#4a2b13]/35 pb-4">
+            <div className="flex items-start justify-between gap-3 border-b-2 border-[#4a2b13]/40 pb-4">
               <div className="min-w-0">
                 {currentItem?.kind === "jingle" ? (
-                  <span className="inline-block border border-[#5c3618] bg-[#d4b87c] px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs font-bold uppercase tracking-wider text-[#3b2412]">
+                  <span className="inline-block border border-[#5c3618] bg-[#d4b87c]/90 px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs font-bold uppercase tracking-wider text-[#3b2412]">
                     ✦ BREAK
                   </span>
                 ) : (
@@ -511,9 +557,21 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                 </h1>
               </div>
 
-              <span className="wax-seal mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-[family-name:var(--font-medieval-display)] text-sm text-[#f7e7c4] rotate-[8deg]">
-                G·FM
-              </span>
+              {/* Echtes fotorealistisches Wachssiegel mit rotem Band */}
+              <div className="relative shrink-0 flex flex-col items-center">
+                <div className="h-14 w-14 overflow-hidden rounded-full border-2 border-[#450a0a] shadow-[0_6px_14px_rgba(0,0,0,0.55)]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/wax-seal.jpg"
+                    alt="Wachssiegel"
+                    className="h-full w-full object-cover scale-[1.28]"
+                  />
+                </div>
+                <div className="-mt-2 flex gap-1 pointer-events-none" aria-hidden>
+                  <span className="h-5 w-2 bg-[#7a1c14] rotate-[8deg] shadow-sm" />
+                  <span className="h-5 w-2 bg-[#5e140e] -rotate-[8deg] shadow-sm" />
+                </div>
+              </div>
             </div>
 
             {/* Demnächst auf dem Spielplan */}
@@ -531,8 +589,8 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                     <span
                       className={`shrink-0 border px-1.5 py-0.5 text-[10px] sm:text-[11px] uppercase tracking-wider ${
                         up.kind === "jingle"
-                          ? "border-[#5c3618] bg-[#d4b87c] text-[#3b2412] font-bold"
-                          : "border-[#4a2b13]/40 bg-[#dfd0ab] text-[#4a2b13]"
+                          ? "border-[#5c3618] bg-[#d4b87c]/90 text-[#3b2412] font-bold"
+                          : "border-[#4a2b13]/40 bg-[#dfd0ab]/80 text-[#4a2b13]"
                       }`}
                     >
                       {up.kind === "jingle" ? "BREAK" : "Lied"}
@@ -548,10 +606,10 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
           </div>
 
           {/* Unterer Holzstab mit gedrechselten Knäufen */}
-          <div className="relative flex items-center">
-            <span className="h-6 w-3.5 rounded-l-full border-2 border-[#1c0b03] bg-[#d4a359] shadow" />
+          <div className="relative z-10 flex items-center">
+            <span className="h-6 w-4 rounded-l-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
             <div className="scroll-rod h-4 flex-1 rounded-sm" />
-            <span className="h-6 w-3.5 rounded-r-full border-2 border-[#1c0b03] bg-[#d4a359] shadow" />
+            <span className="h-6 w-4 rounded-r-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
           </div>
         </section>
       </main>
