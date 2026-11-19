@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { GlatzenmannCrest } from "@/components/GlatzenmannCrest";
+import { MedievalBackdrop } from "@/components/MedievalBackdrop";
 
 export default function EinlassPage() {
   const router = useRouter();
@@ -35,7 +36,8 @@ export default function EinlassPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#150e08] px-4 py-8 sm:py-12 flex items-center justify-center">
+    <main className="relative min-h-screen px-4 py-8 sm:py-12 flex items-center justify-center">
+      <MedievalBackdrop />
       <article className="parchment-bg parchment-woodcut-border relative w-full max-w-2xl px-6 py-9 sm:px-12 sm:py-12 text-[#26160a]">
         {/* Ecken-Ornamente */}
         <span aria-hidden className="absolute top-3 left-3 text-xl text-[#4a2b13] select-none">

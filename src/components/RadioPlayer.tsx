@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GlatzenmannCrest } from "@/components/GlatzenmannCrest";
+import { MedievalBackdrop } from "@/components/MedievalBackdrop";
 import { nowPlaying } from "@/lib/schedule";
 import type { NowPlaying, ScheduleItem, StationState } from "@/lib/types";
 
@@ -247,7 +248,8 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
   }, [nowSnap]);
 
   return (
-    <div className="min-h-screen bg-[#150e08] text-[#26160a] flex flex-col">
+    <div className="relative min-h-screen text-[#26160a] flex flex-col">
+      <MedievalBackdrop />
       <video
         ref={deckARef}
         preload="auto"
@@ -274,9 +276,6 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
             />
             <span className="font-[family-name:var(--font-medieval-display)] text-xl tracking-wide text-[#f4e4c1]">
               Glatzenmann.fm
-            </span>
-            <span className="hidden sm:inline-block border border-[#5c3618] bg-[#2a1b0e] px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs italic text-[#d8be8a]">
-              {tunedIn ? "Im Äther • Indikator für Feinkultur" : "Klampfe gestimmt"}
             </span>
           </div>
 
@@ -376,12 +375,9 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                       </span>
                     ) : (
                       <span className="border border-[#7a1c14] bg-[#7a1c14]/15 px-2.5 py-0.5 font-[family-name:var(--font-medieval-serif)] text-xs font-bold uppercase tracking-wider text-[#7a1c14]">
-                        ● Auf der Klampfe • Live-Sync
+                        ● Auf der Klampfe
                       </span>
                     )}
-                    <span className="font-[family-name:var(--font-medieval-serif)] text-xs italic text-[#5c3618]">
-                      Heldenkranz &amp; Politur
-                    </span>
                   </div>
 
                   <h1 className="mt-2 font-[family-name:var(--font-medieval-display)] text-3xl sm:text-4xl leading-tight text-[#1e1005] break-words">
