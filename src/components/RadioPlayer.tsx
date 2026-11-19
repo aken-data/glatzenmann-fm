@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GlatzenmannCrest } from "@/components/GlatzenmannCrest";
 import { MedievalBackdrop } from "@/components/MedievalBackdrop";
+import { MedievalScroll } from "@/components/MedievalScroll";
 import { nowPlaying } from "@/lib/schedule";
 import type { NowPlaying, ScheduleItem, StationState } from "@/lib/types";
 
@@ -528,20 +529,9 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
           )}
         </section>
 
-        {/* Rechte Spalte: Fotorealistische Boten-Papierrolle mit gedrechselten Stäben & 3D-Wickeln */}
-        <section className="relative w-full max-w-[420px] flex-1">
-          {/* Oberer gedrechselter Holzstab + gerollter Pergament-Zylinder */}
-          <div className="relative z-20 flex items-center">
-            <span className="h-5 w-2.5 rounded-l-full border border-[#1c0b03] bg-[#c99850] shadow" />
-            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
-            <div className="scroll-rod h-3 flex-1 rounded-sm" />
-            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
-            <span className="h-5 w-2.5 rounded-r-full border border-[#1c0b03] bg-[#c99850] shadow" />
-          </div>
-          <div className="scroll-curl-top relative z-10 -mt-3.5 mx-2.5 h-7 rounded-full" />
-
-          {/* Ausgerolltes Pergament */}
-          <div className="scroll-paper relative -mt-2 mx-4 px-5 py-5 sm:px-7 sm:py-6">
+        {/* Rechte Spalte: Fotorealistische Boten-Papierrolle mit Patina & Wachssiegel */}
+        <section className="w-full max-w-[420px] flex-1">
+          <MedievalScroll>
             {/* Aktueller Titel */}
             <div className="flex items-start justify-between gap-3 border-b-2 border-[#4a2b13]/40 pb-4">
               <div className="min-w-0">
@@ -606,17 +596,7 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Unterer gerollter Pergament-Zylinder + gedrechselter Holzstab */}
-          <div className="scroll-curl-bottom relative z-10 -mt-2 mx-2.5 h-7 rounded-full" />
-          <div className="relative z-20 -mt-3.5 flex items-center">
-            <span className="h-5 w-2.5 rounded-l-full border border-[#1c0b03] bg-[#c99850] shadow" />
-            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
-            <div className="scroll-rod h-3 flex-1 rounded-sm" />
-            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
-            <span className="h-5 w-2.5 rounded-r-full border border-[#1c0b03] bg-[#c99850] shadow" />
-          </div>
+          </MedievalScroll>
         </section>
       </main>
     </div>
