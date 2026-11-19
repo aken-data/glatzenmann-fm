@@ -266,8 +266,8 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
         onError={() => setAudioError("Audio-Quelle konnte nicht geladen werden.")}
       />
 
-      {/* Tavernen-Kopfzeile */}
-      <header className="border-b border-[#3b2412]/80 bg-[#1c120a]/85 backdrop-blur-sm text-[#e9d9b5]">
+      {/* Sonnige Tavernen-Kopfzeile */}
+      <header className="border-b border-[#6b3f1e]/60 bg-[#3a200e]/85 backdrop-blur-sm text-[#f7e7c4]">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2.5">
             <span
@@ -414,19 +414,19 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
                 />
               </svg>
 
-              {/* Griffbrett-Zunge bis zum Schallloch */}
+              {/* Griffbrett-Zunge bis an das Schallloch (12.–18. Bund) */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[42px] border-x-2 border-[#1f0d05] bg-[#241108] flex flex-col justify-evenly z-10"
-                style={{ height: "31%" }}
+                style={{ height: "18%" }}
               >
-                {[0, 1, 2, 3, 4].map((f) => (
+                {[0, 1, 2].map((f) => (
                   <span key={f} className="block h-[1.5px] w-full bg-[#d4a359]/65" />
                 ))}
               </div>
 
-              {/* Schallloch + Rosette: anatomisch tiefer (top-[31%]) und kompakt im Korpus */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[30%] z-10">
+              {/* Schallloch + Rosette: anatomisch im Oberbug direkt über der Taille */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-[17%] z-10">
                 <div className="klampfe-rosette relative h-28 w-28 sm:h-32 sm:w-32 rounded-full p-2.5 flex items-center justify-center">
                   <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-[#2b1a0e] bg-[#140b05] shadow-inner flex items-center justify-center">
                     {currentItem?.kind === "song" && currentItem.track?.coverUrl ? (
@@ -528,17 +528,20 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
           )}
         </section>
 
-        {/* Rechte Spalte: Fotorealistische Boten-Papierrolle mit Patina & Wachssiegel */}
+        {/* Rechte Spalte: Fotorealistische Boten-Papierrolle mit gedrechselten Stäben & 3D-Wickeln */}
         <section className="relative w-full max-w-[420px] flex-1">
-          {/* Oberer Holzstab mit gedrechselten Knäufen & Papier-Wickel */}
-          <div className="relative z-10 flex items-center">
-            <span className="h-6 w-4 rounded-l-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
-            <div className="scroll-rod h-4 flex-1 rounded-sm" />
-            <span className="h-6 w-4 rounded-r-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
+          {/* Oberer gedrechselter Holzstab + gerollter Pergament-Zylinder */}
+          <div className="relative z-20 flex items-center">
+            <span className="h-5 w-2.5 rounded-l-full border border-[#1c0b03] bg-[#c99850] shadow" />
+            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
+            <div className="scroll-rod h-3 flex-1 rounded-sm" />
+            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
+            <span className="h-5 w-2.5 rounded-r-full border border-[#1c0b03] bg-[#c99850] shadow" />
           </div>
+          <div className="scroll-curl-top relative z-10 -mt-3.5 mx-2.5 h-7 rounded-full" />
 
           {/* Ausgerolltes Pergament */}
-          <div className="scroll-paper relative mx-3.5 px-5 py-5 sm:px-7 sm:py-6">
+          <div className="scroll-paper relative -mt-2 mx-4 px-5 py-5 sm:px-7 sm:py-6">
             {/* Aktueller Titel */}
             <div className="flex items-start justify-between gap-3 border-b-2 border-[#4a2b13]/40 pb-4">
               <div className="min-w-0">
@@ -605,11 +608,14 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
             </ul>
           </div>
 
-          {/* Unterer Holzstab mit gedrechselten Knäufen */}
-          <div className="relative z-10 flex items-center">
-            <span className="h-6 w-4 rounded-l-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
-            <div className="scroll-rod h-4 flex-1 rounded-sm" />
-            <span className="h-6 w-4 rounded-r-full border-2 border-[#1c0b03] bg-[#b88642] shadow" />
+          {/* Unterer gerollter Pergament-Zylinder + gedrechselter Holzstab */}
+          <div className="scroll-curl-bottom relative z-10 -mt-2 mx-2.5 h-7 rounded-full" />
+          <div className="relative z-20 -mt-3.5 flex items-center">
+            <span className="h-5 w-2.5 rounded-l-full border border-[#1c0b03] bg-[#c99850] shadow" />
+            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
+            <div className="scroll-rod h-3 flex-1 rounded-sm" />
+            <span className="h-4 w-2 border-y border-[#1c0b03] bg-[#52270d]" />
+            <span className="h-5 w-2.5 rounded-r-full border border-[#1c0b03] bg-[#c99850] shadow" />
           </div>
         </section>
       </main>
