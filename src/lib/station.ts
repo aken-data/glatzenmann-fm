@@ -1,4 +1,4 @@
-import { list, put } from "@vercel/blob";
+import { del, list, put } from "@vercel/blob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { nowPlaying, planEra } from "./schedule";
@@ -90,11 +90,13 @@ export function createInitialState(): StationState {
 export async function loadStationState(): Promise<StationState> {
   if (hasBlobToken()) {
     try {
-      const { blobs } = await list({ prefix: BLOB_PATH, limit: 5 });
-      const exact = blobs.find((b) => b.pathname === BLOB_PATH);
-      if (exact) {
-        const sep = exact.url.includes("?") ? "&" : "?";
-        const res = await fetch(`${exact.url}${sep}t=${Date.now()}`, { cache: "no-store" });
+      const { blobs } = await list({ prefix: "station", limit: 20 });
+      const candidates = blobs
+        .filter((b) => b.pathname === BLOB_PATH || b.pathname.startsWith("station-"))
+        .sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+      const latest = candidates[0];
+      if (latest) {
+        const res = await fetch(latest.url, { cache: "no-store" });
         if (res.ok) {
           const parsed = (await res.json()) as StationState;
           if (parsed && parsed.version === 1) return parsed;
@@ -122,13 +124,19 @@ export async function saveStationState(state: StationState): Promise<void> {
   const body = JSON.stringify(state, null, 2);
 
   if (hasBlobToken()) {
+    const prev = await list({ prefix: "station", limit: 20 }).catch(() => ({ blobs: [] }));
     await put(BLOB_PATH, body, {
       access: "public",
       contentType: "application/json",
-      addRandomSuffix: false,
-      allowOverwrite: true,
+      addRandomSuffix: true,
       cacheControlMaxAge: 0,
     });
+    const oldUrls = prev.blobs
+      .filter((b) => b.pathname === BLOB_PATH || b.pathname.startsWith("station-"))
+      .map((b) => b.url);
+    if (oldUrls.length > 0) {
+      await del(oldUrls).catch(() => {});
+    }
     return;
   }
 
