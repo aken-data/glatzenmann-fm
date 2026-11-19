@@ -32,6 +32,7 @@ interface RawSunoClip {
   id?: unknown;
   title?: unknown;
   audio_url?: unknown;
+  video_url?: unknown;
   media_urls?: unknown;
   image_url?: unknown;
   image_large_url?: unknown;
@@ -42,20 +43,29 @@ interface RawSunoClip {
 }
 
 function pickAudioUrl(raw: RawSunoClip): string {
+  // 1. Direkte MP3-URL, falls nicht /api/forbidden
+  const direct = typeof raw.audio_url === "string" ? raw.audio_url.trim() : "";
+  if (direct && !direct.includes("/api/forbidden")) return direct;
+
+  // 2. video_url (.mp4 mit AAC-Audio) – funktioniert in jedem Browser (Chrome/Safari/Firefox),
+  //    während Sunos m4a-opus in Chrome zu NotSupportedError führt.
+  const video = typeof raw.video_url === "string" ? raw.video_url.trim() : "";
+  if (video && !video.includes("/api/forbidden")) return video;
+
+  // 3. Fallback: media_urls
   if (Array.isArray(raw.media_urls)) {
     const candidates = raw.media_urls.filter(
       (m): m is RawMediaUrl =>
         Boolean(m && typeof m === "object" && typeof (m as RawMediaUrl).url === "string"),
     );
-    const progressive = candidates.find(
-      (m) => m.delivery === "progressive" && !(m.url as string).includes("/api/forbidden"),
+    const nonOpus = candidates.find(
+      (m) =>
+        m.content_type !== "m4a-opus" && !(m.url as string).includes("/api/forbidden"),
     );
-    if (progressive) return (progressive.url as string).trim();
+    if (nonOpus) return (nonOpus.url as string).trim();
     const anyValid = candidates.find((m) => !(m.url as string).includes("/api/forbidden"));
     if (anyValid) return (anyValid.url as string).trim();
   }
-  const direct = typeof raw.audio_url === "string" ? raw.audio_url.trim() : "";
-  if (direct && !direct.includes("/api/forbidden")) return direct;
   return "";
 }
 

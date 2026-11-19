@@ -58,8 +58,8 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
   const [nowSnap, setNowSnap] = useState<NowPlaying | null>(initial.current);
   const [audioError, setAudioError] = useState<string | null>(null);
 
-  const deckARef = useRef<HTMLAudioElement | null>(null);
-  const deckBRef = useRef<HTMLAudioElement | null>(null);
+  const deckARef = useRef<HTMLVideoElement | null>(null);
+  const deckBRef = useRef<HTMLVideoElement | null>(null);
   const activeDeckRef = useRef<"A" | "B">("A");
   const deckItemsRef = useRef<{ A: ScheduleItem | null; B: ScheduleItem | null }>({
     A: null,
@@ -233,16 +233,18 @@ export function RadioPlayer({ initial }: { initial: NowResponse }) {
 
   return (
     <div className="min-h-screen bg-[#150e08] text-[#26160a] flex flex-col">
-      <audio
+      <video
         ref={deckARef}
         preload="auto"
         playsInline
+        className="hidden"
         onError={() => setAudioError("Audio-Quelle konnte nicht geladen werden.")}
       />
-      <audio
+      <video
         ref={deckBRef}
         preload="auto"
         playsInline
+        className="hidden"
         onError={() => setAudioError("Audio-Quelle konnte nicht geladen werden.")}
       />
 
